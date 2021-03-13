@@ -1,0 +1,35 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        kotlin_version = '1.4.31'
+        kotlin_coroutine_version = '1.4.2'
+
+        startup_version = '1.0.0'
+
+        compose_version = '1.0.0-beta02'
+        constraintlayout_compose_version = '1.0.0-alpha03'
+        navigation_version = '1.0.0-alpha05'
+        accompanist_coil_version = '0.6.2'
+        koin_version = '2.2.2'
+        timber_version = '4.7.1'
+
+        grpc_version = "1.32.1"
+        grpc_kotlin_version= "1.0.0"
+        protobuf_version = "3.13.0"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.0-alpha08"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.13"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

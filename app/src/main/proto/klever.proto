@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package br.com.lucascordeiro.klever;
+option java_outer_classname = "KleverProto";
+option java_multiple_files = true;
+
+message BankAccount {
+  int64 id = 1;
+  string name = 2;
+  string profilePicUrl = 3;
+  double balance = 4;
+}
+
+message BankAccountTransaction {
+  int64 id = 1;
+  int64 bankAccountId = 2;
+  double amount = 3;
+  int64 transferDate = 4;
+}
+
+message ListOfBankAccountTransaction {
+  int64 count = 1;
+  repeated BankAccountTransaction data = 2;
+}
+
+message GetBankAccountRequest {
+  int64 bankAccountId = 1;
+}
+
+message GetBankAccountTransactionsRequest {
+  int64 bankAccountId = 1;
+}
+
+service KleverService {
+  rpc GetBankAccount (GetBankAccountRequest) returns (stream BankAccount){}
+  rpc GetBankAccountTransactions (GetBankAccountTransactionsRequest) returns (stream  ListOfBankAccountTransaction){}
+}
