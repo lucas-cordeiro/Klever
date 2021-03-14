@@ -1,0 +1,128 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.google.protobuf'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation project(':domain')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+
+    //Android
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.play:core-ktx:1.8.1'
+
+
+    //Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutine_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutine_version"
+
+    //Room
+    kapt "androidx.room:room-runtime:$room_version"
+    kapt"androidx.room:room-compiler:$room_version"
+    api "androidx.room:room-ktx:$room_version"
+
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
+    implementation "androidx.datastore:datastore-core:$datastore_version"
+
+    //Timber
+    api "com.jakewharton.timber:timber:$timber_version"
+
+    //Lifecycle
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    api "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    //Injection
+    implementation "org.koin:koin-core:$koin_version"
+    implementation ("org.koin:koin-android-scope:$koin_version") {
+        exclude group: 'com.android.support'
+    }
+    implementation ("org.koin:koin-android-viewmodel:$koin_version"){
+        exclude group: 'com.android.support'
+    }
+    implementation "org.koin:koin-androidx-compose:$koin_version"
+
+    //S3
+    api 'com.amazonaws:aws-android-sdk-s3:2.16.7'
+    api 'com.amazonaws:aws-android-sdk-core:2.16.7'
+
+    //GRPC
+    api("com.google.protobuf:protobuf-javalite:${rootProject.ext["protobuf_version"]}")
+    api("io.grpc:grpc-kotlin-stub-lite:${rootProject.ext["grpc_kotlin_version"]}")
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
+    runtimeOnly("io.grpc:grpc-okhttp:${rootProject.ext["grpc_version"]}")
+
+    //Review
+    implementation 'com.google.android.play:core:1.9.0'
+
+    //Test
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlin_coroutine_version"
+    testImplementation "org.koin:koin-test:$koin_version"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlin_coroutine_version"
+    androidTestImplementation "androidx.test.ext:junit:$junit_android_version"
+    androidTestImplementation "org.koin:koin-test:$koin_version"
+}
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            debuggable isDebuggable
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${rootProject.ext["protobuf_version"]}"
+    }
+    plugins {
+        java {
+            artifact = "io.grpc:protoc-gen-grpc-java:${rootProject.ext["grpc_version"]}"
+        }
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${rootProject.ext["grpc_version"]}"
+        }
+        grpckt {
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:${rootProject.ext["grpc_kotlin_version"]}:jdk7@jar"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                java { option 'lite' }
+                grpc { option 'lite' }
+                grpckt { option 'lite' }
+            }
+        }
+    }
+}

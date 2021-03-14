@@ -1,4 +1,4 @@
-package br.com.lucascordeiro.klever.ui.theme
+package br.com.lucascordeiro.klever.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

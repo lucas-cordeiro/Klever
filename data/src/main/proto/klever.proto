@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package br.com.lucascordeiro.klever;
+option java_outer_classname = "KleverProto";
+option java_multiple_files = true;
+
+message BankAccount {
+  string id = 1;
+  string name = 2;
+  string profilePicUrl = 3;
+  double balance = 4;
+}
+
+message Coin {
+  string id = 1;
+  string name = 2;
+  string shortName = 3;
+  double price = 4;
+  float percent = 5;
+  string iconUrl = 6;
+}
+
+message BankAccountCoin {
+  string id = 1;
+  string coinId = 2;
+  Coin coin = 3;
+  double amount = 4;
+}
+
+message BankAccountCoinTransaction{
+  string id = 1;
+  string bankAccountId = 2;
+  string coinId = 3;
+  bool credit = 4;
+  double amount = 5;
+  int64 transferDate = 6;
+}
+
+message ListOfBankAccountCoinTransaction {
+  int64 count = 1;
+  repeated BankAccountCoinTransaction data = 2;
+}
+
+message ListOfBankAccountCoin {
+  int64 count = 1;
+  repeated BankAccountCoin data = 2;
+}
+
+message BankAccountTransaction {
+  string id = 1;
+  string bankAccountId = 2;
+  bool credit = 3;
+  double amount = 4;
+  int64 transferDate = 5;
+}
+
+message ListOfBankAccountTransaction {
+  int64 count = 1;
+  repeated BankAccountTransaction data = 2;
+}
+
+message GetBankAccountRequest {
+  string bankAccountId = 1;
+}
+
+message GetBankAccountTransactionsRequest {
+  string bankAccountId = 1;
+}
+
+message GetBankAccountCoinsRequest {
+  string bankAccountId = 1;
+}
+
+message GetBankAccountCoinsTransactionsRequest {
+  string bankAccountId = 1;
+  string coinId = 2;
+}
+
+service KleverService {
+  rpc GetBankAccount (GetBankAccountRequest) returns (stream BankAccount){}
+  rpc GetBankAccountTransactions (GetBankAccountTransactionsRequest) returns (stream  ListOfBankAccountTransaction){}
+  rpc GetBankAccountCoins (GetBankAccountCoinsRequest) returns (stream ListOfBankAccountCoin){}
+  rpc GetBankAccountCoinsTransactions (GetBankAccountCoinsTransactionsRequest) returns (stream ListOfBankAccountCoinTransaction) {}
+  rpc AddBankAccountTransaction (BankAccountTransaction) returns (BankAccountTransaction){}
+  rpc AddBankAccountCoinTransaction (BankAccountCoinTransaction) returns (BankAccountCoinTransaction){}
+}

@@ -7,7 +7,6 @@ import com.google.protobuf.gradle.protoc
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("com.google.protobuf")
 }
 
 android {
@@ -16,8 +15,8 @@ android {
 
     defaultConfig {
         applicationId = "br.com.lucascordeiro.klever"
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdkVersion(rootProject.ext["minSdkVersion"]!!.toString())
+        targetSdkVersion(rootProject.ext["targetSdkVersion"]!!.toString())
         versionCode = 1
         versionName = "1.0"
 
@@ -26,6 +25,7 @@ android {
 
     buildTypes {
         release {
+            debuggable(rootProject.ext["isDebuggable"]!!.toString().toBoolean())
             minifyEnabled(false)
             proguardFiles = mutableListOf(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
@@ -51,6 +51,9 @@ dependencies {
     implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.appcompat:appcompat:1.3.0-beta01")
     implementation("com.google.android.material:material:1.3.0")
+
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
 
     //Compose
@@ -94,12 +97,6 @@ dependencies {
     //Timber
     implementation("com.jakewharton.timber:timber:${rootProject.ext["timber_version"]}")
 
-    //GRPC
-    api("com.google.protobuf:protobuf-javalite:${rootProject.ext["protobuf_version"]}")
-    api("io.grpc:grpc-kotlin-stub-lite:${rootProject.ext["grpc_kotlin_version"]}")
-    implementation("javax.annotation:javax.annotation-api:1.3.2")
-    runtimeOnly("io.grpc:grpc-okhttp:${rootProject.ext["grpc_version"]}")
-
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.0")
 
     testImplementation("junit:junit:4.+")
@@ -110,37 +107,4 @@ dependencies {
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
-}
-
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:${rootProject.ext["protobuf_version"]}"
-    }
-    plugins {
-        id("java") {
-            artifact = "io.grpc:protoc-gen-grpc-java:${rootProject.ext["grpc_version"]}"
-        }
-        id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:${rootProject.ext["grpc_version"]}"
-        }
-        id("grpckt") {
-            artifact = "io.grpc:protoc-gen-grpc-kotlin:${rootProject.ext["grpc_kotlin_version"]}:jdk7@jar"
-        }
-    }
-    generateProtoTasks {
-        all().forEach {
-            it.plugins {
-                id("java") {
-                    option("lite")
-                }
-                id("grpc") {
-                    option("lite")
-                }
-                id("grpckt") {
-                    option("lite")
-                }
-            }
-        }
-    }
 }
