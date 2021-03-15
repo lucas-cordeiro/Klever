@@ -6,6 +6,7 @@ import br.com.lucascordeiro.klever.data.di.module.errorModule
 import br.com.lucascordeiro.klever.data.di.module.mapperModule
 import br.com.lucascordeiro.klever.data.di.module.networkModule
 import br.com.lucascordeiro.klever.data.di.module.repositoryModule
+import br.com.lucascordeiro.klever.di.module.viewModelModule
 import br.com.lucascordeiro.klever.domain.di.module.useCaseModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -24,7 +25,8 @@ class KoinInitializer : Initializer<KoinApplication> {
                 repositoryModule,
                 useCaseModule,
                 mapperModule,
-                errorModule
+                errorModule,
+                viewModelModule
             )
         }
     }
