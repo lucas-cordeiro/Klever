@@ -2,6 +2,7 @@ package br.com.lucascordeiro.klever.ui.home.coins
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -61,13 +63,17 @@ fun HomeCoins(
             )
         )
 
-        LazyRow(Modifier.padding(top = 8.dp)){
-            itemsIndexed(bankAccountCoins){ index ,item ->
+        Row(
+            Modifier
+                .padding(top = 8.dp)
+                .horizontalScroll(rememberScrollState())){
+
+            bankAccountCoins.forEachIndexed{ index ,item ->
                 CoinCard(
                     bankAccountCoin = item,
                     onClick = { openBankAccountCoin(item) },
                     modifier = Modifier
-                        .padding(start = if(index > 0) 16.dp else 0.dp)
+                        .padding(start = if (index > 0) 16.dp else 0.dp)
                         .width(160.dp)
                 )
             }
@@ -92,8 +98,6 @@ private fun CoinCard(
                 ),
             )
     ) {
-        Timber.tag("BUG").d("Coin: $bankAccountCoin")
-
         val coinBalance = remember(bankAccountCoin.amount, bankAccountCoin.coin?.price) {
             (bankAccountCoin.amount ?: 0.0) * (bankAccountCoin.coin?.price ?: 0.0)
         }
@@ -119,7 +123,9 @@ private fun CoinCard(
                         color = MaterialTheme.colors.onBackground,
                         textAlign = TextAlign.End,
                     ),
-                    modifier = Modifier.weight(1f).fillMaxWidth()
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
                 )
             }
             Text(

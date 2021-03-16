@@ -14,10 +14,12 @@ class BankAccountCoinRepositoryImpl(
 ) : BankAccountCoinRepository {
     override suspend fun getBankAccountCoins(bankAccountId: String): Flow<List<BankAccountCoin>> {
         val request = GetBankAccountCoinsRequest.newBuilder().setBankAccountId(bankAccountId).build()
-        return kleverService.getService().getBankAccountCoins(request).map { list ->
+        return kleverService.getService()
+            .getBankAccountCoins(request)
+            .map { list ->
             list.dataList.map {
                 bankAccountCoinMapper.provideFromNetworkToModel().map(it)!!
-            }
+            }.filter { it.coin?.price?:0.0 > 0.0 && it.amount?:0.0 > 0.0 }
         }
     }
 }
