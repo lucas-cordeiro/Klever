@@ -4,7 +4,7 @@
 
 
 ## :scroll: Description
-Projeto desenvolvido com conexão à servidor [GRPC](https://grpc.io/) e utilizando [Jetpack Compose](https://developer.android.com/jetpack/compose?hl=pt-br).
+Projeto desenvolvido com [GRPC](https://grpc.io/) para envio/recebimento de dados e [Jetpack Compose](https://developer.android.com/jetpack/compose?hl=pt-br) na construção das telas.
 
 Servidor criado para a aplicação [Klever Server](https://github.com/lucas-cordeiro/Server-GRPC)
 
