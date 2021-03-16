@@ -6,6 +6,7 @@ import br.com.lucascordeiro.klever.data.mapper.bankAccount.transactions.BankAcco
 import br.com.lucascordeiro.klever.data.network.service.KleverService
 import br.com.lucascordeiro.klever.domain.model.bankaccount.transactions.BankAccountTransaction
 import br.com.lucascordeiro.klever.domain.repository.BankAccountTransactionRepository
+import br.com.lucascordeiro.klever.domain.utils.bankAccountId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -21,5 +22,15 @@ class BankAccountTransactionRepositoryImpl(
                 bankAccountTransactionsMapper.provideFromNetworkToModel().map(it)!!
             }
         }
+    }
+
+    override suspend fun add(bankAccountTransaction: BankAccountTransaction) {
+        val request = br.com.lucascordeiro.klever.BankAccountTransaction.newBuilder()
+            .setBankAccountId(bankAccountId)
+            .setCredit(bankAccountTransaction.credit?:false)
+            .setAmount(bankAccountTransaction.amount?:0.0)
+            .build()
+
+        kleverService.getService().addBankAccountTransaction(request)
     }
 }

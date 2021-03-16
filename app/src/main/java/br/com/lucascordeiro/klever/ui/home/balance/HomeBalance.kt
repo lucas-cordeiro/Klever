@@ -108,7 +108,7 @@ fun HomeBalance(
             currentRange = range,
             onUpdateRange = { viewModel.updateTransactionRange(it) },
             modifier = Modifier
-                .padding(top = 4.dp)
+                .padding(top = 6.dp)
                 .fillMaxHeight()
         )
     }
@@ -199,8 +199,6 @@ private fun TransactionsChart(
             if(balance < minAmount) minAmount = balance
             val diff = maxAmount - minAmount
 
-            Timber.tag("BUG").d("LaunchedEffect MinAmount: $minAmount | MaxAmount: $maxAmount | Diff: $diff BalancePercent: ${(balance - minAmount) / diff}")
-
             val legendBottom = transactions.asReversed().map {
                 when(range){
                     TransactionRange.Day -> it.transferDate?.formattedDay()
@@ -239,7 +237,7 @@ private fun TransactionsChart(
            val context = LocalContext.current
 
            val chartHeight = remember { 200.dp }
-           val columnWidth = remember(this.constraints.maxWidth, data.first) {  if(data.first.isNotEmpty() && constraints.maxWidth >= data.first.size * 50.dp.toPx(context)) maxWidth.div(data.first.size) else 50.dp }
+           val columnWidth = remember(this.constraints.maxWidth, data.first) {  if(data.first.isNotEmpty() && constraints.maxWidth >= data.first.size * 70.dp.toPx(context)) maxWidth.div(data.first.size) else 70.dp }
 
            LinearChart(
                data = data.first,

@@ -80,17 +80,6 @@ class HomeBalanceViewModel(
                                 )
                             }.toMutableList()
 
-                            Timber.tag("BUG").d(
-                                "BalancePerTransaction: ${balancePerTransaction.size} ${
-                                    balancePerTransaction.map {
-                                        Pair(
-                                            it.balance,
-                                            it.transferDate
-                                        )
-                                    }
-                                }"
-                            )
-
                             val filteredList = balancePerTransaction.filter {
                                 when (range) {
                                     is TransactionRange.Day -> it.transferDate.isToday()
@@ -100,17 +89,6 @@ class HomeBalanceViewModel(
                                     else -> true
                                 }
                             }
-
-                            Timber.tag("BUG").d(
-                                "FilteredList: ${filteredList.size} ${
-                                    filteredList.map {
-                                        Pair(
-                                            it.balance,
-                                            it.transferDate
-                                        )
-                                    }
-                                }"
-                            )
 
                             var minAmount = balancePerTransaction.minOf { it.balance ?: 0.0 }
                                 .round(-2, RoundingMode.DOWN)
@@ -135,16 +113,6 @@ class HomeBalanceViewModel(
                                 }
                             }.values
 
-                            Timber.tag("BUG").d(
-                                "GroupedList: ${groupedList.size} ${
-                                    groupedList.map {
-                                        Pair(
-                                            it.size,
-                                            it.map { it.balance })
-                                    }
-                                }"
-                            )
-
                             val percentBalancePerTransaction = groupedList.map { transactions ->
                                 BankAccountTransaction(
                                     balance = transactions.first().balance,
@@ -153,18 +121,6 @@ class HomeBalanceViewModel(
                                     transferDate = transactions.first().transferDate,
                                 )
                             }.toMutableList()
-
-                            Timber.tag("BUG").d(
-                                "PercentBalancePerTransaction:  ${percentBalancePerTransaction.size} ${
-                                    percentBalancePerTransaction.map {
-                                        Triple(
-                                            it.balance,
-                                            it.balancePercent,
-                                            it.transferDate
-                                        )
-                                    }
-                                }"
-                            )
 
                             percentBalancePerTransaction.add(
                                 0, BankAccountTransaction(

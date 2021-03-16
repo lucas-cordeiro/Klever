@@ -4,5 +4,6 @@ import br.com.lucascordeiro.klever.domain.model.bankaccount.transactions.BankAcc
 import kotlinx.coroutines.flow.Flow
 
 interface BankAccountTransactionRepository {
+    suspend fun add(bankAccountTransaction: BankAccountTransaction)
     suspend fun getBankAccountTransactions(bankAccountId: String): Flow<List<BankAccountTransaction>>
 }

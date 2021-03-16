@@ -8,7 +8,7 @@ fun ErrorEntity.handleMessage(defaultMessage: String) : String {
         is ErrorEntity.ApiError -> {
            this.handleApiMessage(defaultMessage)
         }
-        is ErrorEntity.App -> {
+        is ErrorEntity.BankAccount -> {
             this.handleValidateMessage(defaultMessage)
         }
         else -> defaultMessage

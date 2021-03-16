@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import br.com.lucascordeiro.klever.components.helper.getViewModel
 import br.com.lucascordeiro.klever.theme.PurpleDark
 import br.com.lucascordeiro.klever.theme.PurpleLight
+import br.com.lucascordeiro.klever.ui.home.actions.HomeActions
 import br.com.lucascordeiro.klever.ui.home.balance.HomeBalance
 import br.com.lucascordeiro.klever.ui.home.coins.HomeCoins
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -71,6 +72,14 @@ fun Home(
 
         HomeCoins(
             openBankAccountCoin = { /*TODO abrir tela de bankAccountCoin */},
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
+                .padding(top = 16.dp)
+                .fillMaxWidth()
+        )
+
+        HomeActions(
+            balance = bankAccount.balance?:0.0,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = 16.dp)
