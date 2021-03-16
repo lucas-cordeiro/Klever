@@ -1,17 +1,19 @@
-# Pet Jetpack Compose
+# Klever
 
-<!--- Replace <OWNER> with your Github Username and <REPOSITORY> with the name of your repository. -->
-<!--- You can find both of these in the url bar when you open your repository in github. -->
-![Workflow result](https://github.com/lucas-cordeiro/Pet-JetpackCompose/workflows/Check/badge.svg)
+![Compose Version](https://img.shields.io/badge/Compose-1.0.0--beta02-brightgreen)
 
 
 ## :scroll: Description
-<!--- Describe your app in one or two sentences -->
-Project developed for [Android Dev Challenge](https://android-developers.googleblog.com/2021/02/android-dev-challenge-lift-off-with.html) Week #1 - Puppy adoption app
+Projeto desenvolvido com conexão à servidor [GRPC](https://grpc.io/) e utilizando [Jetpack Compose](https://developer.android.com/jetpack/compose?hl=pt-br).
+
+Servidor criado para a aplicação [Klever Server](https://github.com/lucas-cordeiro/Server-GRPC)
 
 ## :camera_flash: Screenshots
-<!-- You can add more screenshots here if you like -->
 <img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
+
+## :pencil2: Original design
+[Cryptocurrency apps](https://dribbble.com/shots/14223823-Cryptocurrency-apps) by [Agung Wahyu Saputra](https://dribbble.com/agungwsaputra)
+
 
 ## License
 ```
