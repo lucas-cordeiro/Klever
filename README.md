@@ -15,10 +15,15 @@ Servidor criado para a aplicação [Klever Server](https://github.com/lucas-cord
 [Cryptocurrency apps](https://dribbble.com/shots/14223823-Cryptocurrency-apps) by [Agung Wahyu Saputra](https://dribbble.com/agungwsaputra)
 
 
-<!-- LICENSE -->
-## License
+## :iphone: Try It
 
-All the code available under the MIT license. See [LICENSE](LICENSE).
+Install [app-debug.apk](results/app-debug.apk)
+
+
+<!-- LICENSE -->
+## :clipboard: License
+
+All the code available under the MIT license.
 
 ```
 MIT License
@@ -45,6 +50,6 @@ SOFTWARE.
 ```
 
 <!-- CONTACT -->
-## Contact
+## :thumbsup: Contact
 
 Lucas Cordeiro - lucas.cordeiro5@etec.sp.gov.br
