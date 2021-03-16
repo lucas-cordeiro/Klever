@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class HomeCoinsViewModel(
     private val getBankAccountCoinsUseCase: GetBankAccountCoinsUseCase,
@@ -35,6 +36,7 @@ class HomeCoinsViewModel(
                 when(result){
                     is Result.Success -> {
                         _bankAccountCoins.value = result.data.asReversed()
+                        Timber.tag("BUG").d("Coins Size: ${result.data.size} Data: ${result.data}")
                     }
                     is Result.Error -> {
                         val error = result.error
