@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,6 +65,7 @@ import br.com.lucascordeiro.klever.theme.PurpleMedium
 import br.com.lucascordeiro.klever.utils.fromPx
 import br.com.lucascordeiro.klever.utils.toPx
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.math.RoundingMode
 import java.util.*
@@ -74,7 +77,7 @@ fun HomeBalance(
     bankAccount: BankAccount,
     modifier: Modifier = Modifier,
     viewModel: HomeBalanceViewModel = getViewModel(),
-){
+) {
 
     LaunchedEffect(bankAccount) {
         if ((bankAccount.balance ?: 0.0) > 0.0)
@@ -84,15 +87,28 @@ fun HomeBalance(
     val transactions by viewModel.transactions.collectAsState()
     val range by viewModel.transactionRange.collectAsState()
 
+    val chartScrollState = rememberScrollState()
+
+    LaunchedEffect(chartScrollState.maxValue) {
+        chartScrollState.animateScrollTo(
+            value = chartScrollState.maxValue,
+            animationSpec = tween(
+                durationMillis = 500,
+                easing = FastOutSlowInEasing,
+            )
+        )
+    }
+
     Column(modifier) {
         Balance(
             bankAccount,
             modifier = Modifier
         )
         TransactionsChart(
-            balance = bankAccount.balance?:0.0,
+            balance = bankAccount.balance ?: 0.0,
             transactionsData = transactions,
             range = range,
+            chartScrollState = chartScrollState,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 0.dp)
@@ -100,13 +116,22 @@ fun HomeBalance(
 
         Divider(
             color = FontLight.copy(alpha = ContentAlpha.medium),
-            modifier =  Modifier
+            modifier = Modifier
                 .padding(top = 4.dp)
         )
 
+        val scope = rememberCoroutineScope()
+
         SwitchTransactionRange(
             currentRange = range,
-            onUpdateRange = { viewModel.updateTransactionRange(it) },
+            onUpdateRange = {
+                if(it!= range){
+                    scope.launch {
+                        chartScrollState.scrollTo(0)
+                    }
+                    viewModel.updateTransactionRange(it)
+                }
+            },
             modifier = Modifier
                 .padding(top = 6.dp)
                 .fillMaxHeight()
@@ -176,6 +201,7 @@ private fun TransactionsChart(
     balance: Double,
     transactionsData: Triple<List<BankAccountTransaction>, Double, Double>,
     range: TransactionRange,
+    chartScrollState: ScrollState,
     modifier: Modifier = Modifier
 ) {
     var chartData: Triple<List<Double>, List<String>, List<Pair<String, Double?>>> by remember {
@@ -204,7 +230,7 @@ private fun TransactionsChart(
                     TransactionRange.Day -> it.transferDate?.formattedDay()
                     TransactionRange.Week -> it.transferDate?.getWeek()
                     TransactionRange.Month -> it.transferDate?.getDayOfMonth()?.toString()
-                    else -> it.transferDate?.getMonth()
+                    else -> it.transferDate?.getMonth()?.capitalize(Locale.getDefault())
                 }
             }.filterNotNull().toMutableList()
             legendBottom.removeLast()
@@ -220,17 +246,7 @@ private fun TransactionsChart(
         }
     }
 
-    val chartScrollState = rememberScrollState()
 
-    LaunchedEffect(chartScrollState.maxValue){
-        chartScrollState.animateScrollTo(
-            value = chartScrollState.maxValue,
-            animationSpec = tween(
-                durationMillis = 500,
-                easing = FastOutSlowInEasing,
-            )
-        )
-    }
 
    Crossfade(targetState = chartData, modifier) { data ->
        BoxWithConstraints() {
