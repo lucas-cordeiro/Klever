@@ -100,9 +100,6 @@ class HomeBalanceViewModel(
 
                             val diff = maxAmount - minAmount
 
-                            Timber.tag("BUG")
-                                .d("MinAmount: $minAmount | MaxAmount: $maxAmount | Diff: $diff")
-
                             val groupedList = filteredList.groupBy {
                                 when (range) {
                                     is TransactionRange.Day -> UUID.randomUUID()
@@ -135,7 +132,7 @@ class HomeBalanceViewModel(
                         is Result.Error -> {
                             val error = result.error
                             val message =
-                                error.handleMessage("Falha ao recuperar os dados da sua conta")
+                                error.handleMessage("Failed to recover your account data")
                             val code = error.code
                             _state.value = ViewState.Error(
                                 message = message,

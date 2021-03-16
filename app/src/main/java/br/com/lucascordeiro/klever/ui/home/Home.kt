@@ -1,5 +1,6 @@
 package br.com.lucascordeiro.klever.ui.home
 
+import android.view.View
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -37,6 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import br.com.lucascordeiro.klever.components.helper.getViewModel
+import br.com.lucascordeiro.klever.components.state.ErrorDialogState
 import br.com.lucascordeiro.klever.theme.PurpleDark
 import br.com.lucascordeiro.klever.theme.PurpleLight
 import br.com.lucascordeiro.klever.ui.home.actions.HomeActions
@@ -54,6 +56,7 @@ fun Home(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
         val bankAccount by homeViewModel.bankAccount.collectAsState()
+        val state by homeViewModel.state.collectAsState()
 
         HomeHeader(
             bankAccount = bankAccount,
@@ -85,5 +88,7 @@ fun Home(
                 .padding(top = 16.dp)
                 .fillMaxWidth()
         )
+
+        ErrorDialogState(state = state, resetState = { homeViewModel.resetState() })
     }
 }

@@ -34,11 +34,11 @@ class HomeCoinsViewModel(
             getBankAccountCoinsUseCase.get().collect { result ->
                 when(result){
                     is Result.Success -> {
-                        _bankAccountCoins.value = result.data
+                        _bankAccountCoins.value = result.data.asReversed()
                     }
                     is Result.Error -> {
                         val error = result.error
-                        val message = error.handleMessage("Falha ao recuperar os dados de suas moedas")
+                        val message = error.handleMessage("Failed to retrieve data from your cryptocurrencies")
                         val code = error.code
                         _state.value = ViewState.Error(
                             message = message,

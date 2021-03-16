@@ -28,6 +28,10 @@ class HomeViewModel(
         collectBankAccount()
     }
 
+    fun resetState(){
+        _state.value = ViewState.Idle
+    }
+
     fun collectBankAccount(){
         viewModelScope.launch {
             getBankAccountUseCase.getBankAccount().collect { result ->
@@ -37,7 +41,7 @@ class HomeViewModel(
                     }
                     is Result.Error -> {
                         val error = result.error
-                        val message = error.handleMessage("Falha ao recuperar os dados da sua conta")
+                        val message = error.handleMessage("Failed to recover your account data")
                         val code = error.code
                         _state.value = ViewState.Error(
                             message = message,

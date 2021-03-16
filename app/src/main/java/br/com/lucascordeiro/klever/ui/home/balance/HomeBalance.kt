@@ -208,7 +208,7 @@ private fun TransactionsChart(
                 }
             }.filterNotNull().toMutableList()
             legendBottom.removeLast()
-            legendBottom.add("Última")
+            legendBottom.add("Now")
 
 
             val legendEnd: MutableList<Pair<String, Double?>> = ArrayList()
