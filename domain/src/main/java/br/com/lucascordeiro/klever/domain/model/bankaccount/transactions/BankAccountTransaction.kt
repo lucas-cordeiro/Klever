@@ -5,5 +5,7 @@ data class BankAccountTransaction(
     var bankAccountId: String? = null,
     var credit: Boolean? = null,
     var amount: Double? = null,
+    var balance: Double? = null,
+    var balancePercent: Double? = null,
     var transferDate: Long? = null,
 )
